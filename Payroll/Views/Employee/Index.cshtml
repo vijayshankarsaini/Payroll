@@ -1,0 +1,98 @@
+﻿@{
+    ViewBag.Title = "Employees";
+}
+<div class="row">
+    <div class="col-lg-12 col-md-12">
+        <div class="panel panel-info">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <strong><span class="glyphicon glyphicon-th-list"></span> Employees</strong>
+                    <strong id="btnAddNew" class="pointer" style="float:right;"><span class="glyphicon glyphicon-plus-sign"></span> Add New</strong>
+                </div>
+            </div>
+            <div class="panel-body" style="height:450px!important; overflow:auto;">
+                <div class="table-responsive">
+                    <table class="DataTable table table-striped table-bordered" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th style="width:10%;">#</th>
+                                <th style="width:30%;">Name</th>
+                                <th style="width:20%;">Date of Birth</th>
+                                <th style="width:10%;">TIN</th>
+                                <th style="width:20%;">Employee Type</th>
+                                <th style="width:10%;"></th>
+                            </tr>
+                        </thead>
+                        <tbody class="tbody"></tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row">
+    <div class="modal fade" id="myModal" role="dialog">
+        @model Payroll.ViewModel.EmployeeVM
+        <div class="modal-dialog" style="width:60%">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4><span id="title" class="glyphicon glyphicon-plus-sign"></span> Employee</h4>
+                </div>
+                <div class="modal-body">
+                    @using (Html.BeginForm("Create", "Employee", FormMethod.Post, new { @id = "form1" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.HiddenFor(model => model.Id)
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.Name)
+                                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", @Maxlength = 15 })
+                                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.DateOfBirth)
+                                @Html.TextBoxFor(model => model.DateOfBirth, new { @class = "form-control datepicker", @Maxlength = 11 })
+                                @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.TIN)
+                                @Html.TextBoxFor(model => model.TIN, new { @class = "form-control", @Maxlength = 15 })
+                                @Html.ValidationMessageFor(model => model.TIN, "", new { @class = "text-danger" })
+                            </div>
+                            <div class="form-group col-md-6">
+                                @Html.LabelFor(model => model.EmployeeType)
+                                @Html.DropDownListFor(model => model.EmployeeType, (IEnumerable<SelectListItem>)Model.EmployeeTypes, new { @id = "ddlEmployeeType", @class = "select2-single form-control" })
+                                @Html.ValidationMessageFor(model => model.EmployeeType, "", new { @class = "text-danger" })
+                            </div>
+                        </div>
+                        <div class="row" id="divSalary">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="form-group col-lg-offset-4 col-md-4">
+                                        @Html.LabelFor(model => model.Days)
+                                        @Html.TextBoxFor(model => model.Days, new { @class = "form-control", @Maxlength = 15 })
+                                        @Html.ValidationMessageFor(model => model.Days, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12 text-center">
+                                        <h3><label id="lblSalaryInfo" class="text-danger"></label></h3>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <button type="button" class="btn btn-primary" onclick="return Action(0)" id="btnAdd"><span class="glyphicon glyphicon-plus-sign"></span> Add</button>
+                        <button type="button" class="btn btn-primary" onclick="return Action(1)" id="btnUpdate" style="display:none;"><span class="glyphicon glyphicon-edit"></span> Update</button>
+                        <button type="button" class="btn btn-primary" onclick="return Action(2)" id="btnDelete" style="display:none;"><span class="glyphicon glyphicon-trash"></span> Delete</button>
+                        <button type="button" class="btn btn-success" onclick="return Action(3)" id="btnSalary" style="display:none;"><span class="glyphicon glyphicon-euro"></span> Salary</button>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal" id="btnCancel"><span class="glyphicon glyphicon-remove-sign"></span> Cancel</button>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript" src="~/js/Employee.js"></script>
